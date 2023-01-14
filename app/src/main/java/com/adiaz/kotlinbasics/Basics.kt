@@ -162,12 +162,16 @@ fun main() {
     val john = Person()
     john.stateHobby()
 
+    print("\n\nInheritance: \n\n")
     // Inheritance
     val myCar = Vehicle("A5", "Audi")
     val myECar = ElectricCar("Tesla model S", "Tesla", 504.23)
 
     myCar.drive(200.0)
     myECar.drive(230.2)
+
+    myECar.extendRange(25.2)
+    myECar.chargerType = "Type 2"
 
 
     // Challenge: create three objets from the class MobilePhone
@@ -262,7 +266,7 @@ or base class
  */
 open class Vehicle(val name: String, val brand: String) {
     // properties
-    var range: Double = 0.0
+    open var range: Double = 0.0
     // methods
     fun extendRange(amount: Double) {
         if (amount > 0)
@@ -274,7 +278,8 @@ open class Vehicle(val name: String, val brand: String) {
 }
 
 class ElectricCar(name: String, brand: String, batteryLife: Double) : Vehicle(name, brand){
-
+    override var range = batteryLife * 6
+    var chargerType = "Type 1"
 }
 
 // Challenge: create a class
