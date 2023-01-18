@@ -12,7 +12,7 @@ fun main() {
     val user2 = User(2, "Xim")
     println(user1.name == user2.name)
 
-    val updatedUser = user1.copy(name="Yao")
+    val updatedUser = user1.copy(name = "Yao")
 
     // Deconstructing
     val (id, newName) = updatedUser
@@ -74,14 +74,14 @@ fun main() {
     // Assignment operators
     var myNum = 3
     myNum += 3
-    myNum ++
+    myNum++
     println("The result is ${++myNum}")
 
     // if statement
     val heightPerson1 = 175
     val heightPerson2 = 185
 
-    if (heightPerson1 > heightPerson2){
+    if (heightPerson1 > heightPerson2) {
         println("Use raw force")
         heightPerson1
     } else if (heightPerson1 == heightPerson2) {
@@ -93,7 +93,7 @@ fun main() {
     // When expressions similar to switch condition
     val season = 3
 
-    when(season) {
+    when (season) {
         1 -> println("Spring")
         2 -> println("Summer")
         3 -> {
@@ -105,7 +105,7 @@ fun main() {
     }
 
     val x: Any = 23.34
-    when(x) {
+    when (x) {
         is Int -> println("$x is an integer")
         is Double -> println("$x is a double")
         is Float -> println("$x is a Float")
@@ -113,7 +113,7 @@ fun main() {
     }
 
     // when can be used as an expression
-    val result_when = when(x) {
+    val result_when = when (x) {
         is Int -> "X is an integer"
         is Double -> "X is a float"
         else -> "X is not a number"
@@ -124,13 +124,13 @@ fun main() {
     var xWhile = 10
     while (xWhile >= 1) {
         println(xWhile)
-        xWhile --;
+        xWhile--;
     }
 
     var k = 1
     do {
         println(k)
-        k ++
+        k++
     } while (k <= 10)
 
     // in for loops you can use .. ; until; downTo; and specify the step
@@ -164,14 +164,19 @@ fun main() {
 
     print("\n\nInheritance: \n\n")
     // Inheritance
-    val myCar = Vehicle("A5", "Audi")
-    val myECar = ElectricCar("Tesla model S", "Tesla", 504.23)
+    val myCar = Vehicle("A5", "Audi", 256.00)
+    val myECar = ElectricCar("Tesla model S", "Tesla", 504.23, 240.00)
 
     myCar.drive(200.0)
     myECar.drive(230.2)
 
     myECar.extendRange(25.2)
     myECar.chargerType = "Type 2"
+
+    // List
+    val stringList: List<Any> = listOf(
+        "Aldair", 25, 'o', 21.01
+    )
 
 
     // Challenge: create three objets from the class MobilePhone
@@ -198,7 +203,7 @@ fun divedUp(a: Double, b: Double): Double {
 
 // Classes
 
-class Person constructor(firstName: String = "Person name", lastName: String="Person last name") {
+class Person constructor(firstName: String = "Person name", lastName: String = "Person last name") {
     // Member variables - properties
     var age: Int? = null
     var hobby: String = "Watch Netflix"
@@ -211,7 +216,7 @@ class Person constructor(firstName: String = "Person name", lastName: String="Pe
     }
 
     // Member secondary constructor
-    constructor(firstName: String, lastName: String, age: Int) : this (firstName, lastName) {
+    constructor(firstName: String, lastName: String, age: Int) : this(firstName, lastName) {
         this.age = age
         // this.firstName = firstName
     }
@@ -224,19 +229,21 @@ class Person constructor(firstName: String = "Person name", lastName: String="Pe
 
 }
 
-class Car(){
+class Car() {
     lateinit var owner: String
 
     val myBrand: String = "BMW"
-    get () {
-        return field.lowercase()
-    }
+        get() {
+            return field.lowercase()
+        }
 
     var maxSpeed: Int = 250
         get() = field
         set(value) {
-            field = if(value > 0) value else throw IllegalArgumentException("Max speed cannot be" +
-                    "less than zero")
+            field = if (value > 0) value else throw IllegalArgumentException(
+                "Max speed cannot be" +
+                        "less than zero"
+            )
         }
 
     var myModel: String = "M5"
@@ -258,28 +265,69 @@ class Car(){
  run into a recursive call which will generate
  a StackOverflowError.*/
 
+// Interfaces
+
+interface Drivable {
+    val maxSpeed: Double
+    fun drive(): String
+    fun brake() {
+        println("The drivable is breaking")
+    }
+}
+
+
 // Inheritance
 /*
 The class that inherits the features of another class is called the sub class or child class or
 derived class, and the class whose features are inherited is called the super class or parent class
 or base class
  */
-open class Vehicle(val name: String, val brand: String) {
+open class Vehicle(val name: String, val brand: String, override val maxSpeed: Double) : Drivable {
     // properties
     open var range: Double = 0.0
+
     // methods
     fun extendRange(amount: Double) {
         if (amount > 0)
             range += amount
     }
-    fun drive(distance: Double){
+
+    override fun drive(): String {
+        return "Driving the interface drive"
+    }
+
+    open fun drive(distance: Double) {
         println("Dove for $distance Km")
     }
 }
 
-class ElectricCar(name: String, brand: String, batteryLife: Double) : Vehicle(name, brand){
+class ElectricCar(name: String, brand: String, batteryLife: Double, maxSpeed: Double) : Vehicle(
+    name, brand,
+    maxSpeed
+) {
     override var range = batteryLife * 6
     var chargerType = "Type 1"
+
+    override fun drive(distance: Double) {
+        println("Drove for $distance Km on electricity")
+    }
+
+    override fun drive(): String {
+        return "Dirve for $range KM on electricity"
+    }
+
+    override fun brake() {
+        super.brake()
+    }
+}
+// Abstract class
+abstract class Mammal(private val name: String, private val origin: String, private val weight: Double) {
+    // Abstract property
+    abstract var maxSpeed: Double
+
+    // Abstract methods
+    abstract fun run()
+    abstract fun breath()
 }
 
 // Challenge: create a class
